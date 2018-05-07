@@ -31,8 +31,8 @@ class DQN():
 
     def learn(self,batch,gamma):
         obs, r, a, next_obs, done = self.sample(batch) #random samples from memory
-        pred_target = self.rlmod.predict(np.array(obs).reshape(batch, 4)) #predicted q-values
-        next_op1 = self.rlmod.predict(np.array(next_obs).reshape(batch, 4)) # actual q-values
+        pred_target = self.rlmod.predict(np.array(obs).reshape(batch, self.states)) #predicted q-values
+        next_op1 = self.rlmod.predict(np.array(next_obs).reshape(batch, self.states)) # actual q-values
         for i in range(batch):
             k = a[i]  # k is the index of action of the action taken
             if done[i] == False:
@@ -40,10 +40,10 @@ class DQN():
             else:
                 target = r[i] #For terminal states
             pred_target[i][k] = target
-        self.rlmod.fit(np.array(obs).reshape(batch, 4), pred_target.reshape(batch, 2), epochs=1, batch_size=1, verbose=0) #training the network to approximate q-values
+        self.rlmod.fit(np.array(obs).reshape(batch, self.states), pred_target.reshape(batch, self.actions), epochs=1, batch_size=1, verbose=0) #training the network to approximate q-values
 
     def action_select(self,x, eph):# e-greedy action selection
-        q_out = self.rlmod.predict_on_batch(np.array(x).reshape(1, 4))
+        q_out = self.rlmod.predict_on_batch(np.array(x).reshape(1, self.states))
         action = np.argmax(q_out)
         act = np.array([0, 1, action])
         return np.random.choice(act, p=[(eph / 2), (eph / 2), (1 - eph)])
