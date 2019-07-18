@@ -3,16 +3,19 @@ import numpy as np
 from DQNagent import DQN
 
 
-
+#Test the agent on Cartpole-v0 problem on openAI
 
 env = gym.make('CartPole-v0')
-
+# get the number of observation and number of actions
 actions = env.action_space.n
 states = env.observation_space.shape[0]
+
+
+#create an instance of the DQN agent
 agent = DQN(states, actions)
 
+
 total_episodes = 1000
-batch = 64
 eph = 0.9 #ephsilon
 eph_min = 0.01
 decay = 0.995 #decay for ephsilon
