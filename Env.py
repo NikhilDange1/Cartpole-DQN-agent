@@ -2,6 +2,9 @@ import gym
 import numpy as np
 from DQNagent import DQN
 
+
+
+
 env = gym.make('CartPole-v0')
 
 actions = env.action_space.n
@@ -9,12 +12,10 @@ states = env.observation_space.shape[0]
 agent = DQN(states, actions)
 
 total_episodes = 1000
-agent.memory(100000)
 batch = 64
 eph = 0.9 #ephsilon
 eph_min = 0.01
 decay = 0.995 #decay for ephsilon
-gamma = 0.99
 
 count =0
 average_rewards=[]
@@ -32,8 +33,8 @@ for episodes in range(total_episodes):
         total_reward+=reward
         agent.push([current_state, reward, action, next_state, done]) #push to memory
         current_state = next_state
-        if count > batch:
-            agent.learn(batch,gamma)
+        if count > agent.batch_size:
+            agent.learn()
         count+=1
         if eph > eph_min:
             eph*=decay
