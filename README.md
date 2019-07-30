@@ -26,3 +26,10 @@ eph_min = 0.01
 decay = 0.995 #decay for ephsilon
 gamma = 0.99 # discount factor
 ```
+
+## Result
+Cartpole environment
+
+![](https://github.com/NikhilDange1/Cartpole-DQN-agent/blob/master/images/cartpole.gif)
+
+
